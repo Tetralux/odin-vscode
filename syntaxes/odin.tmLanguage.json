@@ -1,303 +1,206 @@
-{
-	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-	"name": "Odin",
-	"patterns": [
-		{
-			"include": "#comments"
-		},
-		{
-			"include": "#keywords"
-		},
-		{
-			"include": "#functions-and-declarations"
-		},
-		{
-			"include": "#types"
-		},
-		{
-			"include": "#strings"
-		},
-		{
-			"include": "#string-escaped-char"
-		}
-	],
-	"repository": {
-		"identifier": {
-			"patterns": [{
-				"match": "\\b[[:alpha:]_][[:alnum:]_]*\\b"
-			}]
-		},
-		"type-chars": {
-			"patterns": [{
-				"match": "[[:alnum:]\\s,._^<>\\[\\]-]"
-			}]
-		},
-		"screaming-identifier": {
-			"patterns": [{
-				"match": "\\b[A-Z_](?![a-z])[A-Z_0-9]+\\b"
-			}]
-		},
+/*
+    A simple base64 encoder/decoder.
 
-		"block-comment": {
-			"patterns": [
-				{
-					"name": "comment.block.odin",
-					"begin": "/\\*",
-					"end": "\\*/",
-					"patterns": [{
-						"include": "#block-comment"
-					}]
-				}
-			]
-		},
-		"comments": {
-			"patterns": [
-				{
-					"include": "#block-comment"
-				},
-				{
-					"name": "comment.line.double-slash.odin",
-					"begin": "//",
-					"end": "\n"
-				}
-			]
-		},
-		"keywords": {
-			"patterns": [
-				{
-					"name": "keyword.control.odin",
-					"match": "\\b(import|export|foreign|package)\\b"
-				},
-				{
-					"name": "keyword.control.odin",
-					"match": "\\b(if|else|when|for|in|defer|switch|return|const)\\b"
-				},
-				{
-					"name": "keyword.control.odin",
-					"match": "\\b(fallthrough|break|continue|case|vector|static|dynamic)\\b"
-				},
-				{
-					"name": "keyword.control.odin",
-					"match": "\\b(using|do|inline|no_inline)\\b"
-				},
-				{
-					"name": "keyword.control.odin",
-					"match": "\\b(asm|yield|await)\\b"
-				},
-				{
-					"name": "keyword.operator.odin",
-					"match": "\\b(distinct|context)\\b"
-				},
-				{
-					"name": "constant.language.odin",
-					"match": "\\b(nil|true|false)\\b"
-				},
-				{
-					"name": "constant.numeric.odin",
-					"match": "\\b(\\d(\\d|_)*(.\\d(\\d|_)*)?)((e|E)(\\+|-)?\\d+)?[ijk]?\\b"
-				},
-				{
-					"name": "constant.numeric.odin",
-					"match": "\\b((0b(0|1|_)+)|(0o(\\d|_)+)|(0d(\\d|_)+)|(0[xXh](\\h|_)+))[i]?\\b"
-				},
-				{
-					"name": "constant.numeric.odin",
-					"match": "---"
-				},
-				{
-					"name": "storage.type.odin",
-					"match": "\\b(type|var|macro|struct|enum|union|map|set|bit_field|typeid)\\b"
-				},
-				{
-					"name": "keyword.function.odin",
-					"match": "\\b(cast|transmute|auto_cast)\\b"
-				},
-				{
-					"name": "keyword.operator.odin",
-					"match": "@"
-				},
-				{
-					"name": "keyword.tag.odin",
-					"comment": "Use #name to use a pattern",
-					"match": "\\b([#@]\\s*{{#identifier}})\\b"
-				}
-			]
-		},
-		"functions-and-declarations": {
-			"patterns": [
-				{
-					"captures": {
-						"1": {
-							"name": "entity.name.function.odin"
-						},
-						"2": {
-							"name": "storage.type.odin"
-						}
-					},
-					"match": "\\b({{#identifier}})\\s*[:]\\s*[:]\\s*(proc)"
-				},
-				{
-					"captures": {
-						"1": {
-							"name": "entity.name.function.odin"
-						},
-						"2": {
-							"name": "keyword.control.odin"
-						},
-						"3": {
-							"name": "storage.type.odin"
-						}
-					},
-					"match": "\\b({{#identifier}})\\s*[:]\\s*[:]\\s*(inline|no_inline)\\s+(proc)"
-				},
-				{
-					"captures": {
-						"1": {
-							"name": "keyword.function.odin"
-						}
-					},
-					"match": "\\b(size_of|align_of|offset_of|type_of|type_info_of|typeid_of)\\b\\s*\\("
-				},
-				{
-					"captures": {
-						"1": {
-							"name": "storage.type.odin"
-						}
-					},
-					"match": "(proc|macro)\\s*[\\(]"
-				},
-				{
-					"captures": {
-						"1": {
-							"name": "support.function.odin"
-						}
-					},
-					"match": "({{identifier}})\\s*[!]?\\s*[\\(]"
-				},
-				{
-					"captures": {
-						"1": {
-							"name": "meta.type.name.odin"
-						},
-						"2": {
-							"name": "storage.type.odin"
-						}
-					},
-					"match": "\\b({{identifier}})\\s*[:]\\s*[:]\\s*(struct|union|enum|bit_field)"
-				}
-			]
-		},
-		"types": {
-			"patterns": [
-				{
-					"captures": {
-						"1": {
-							"name": "storage.type.odin"
-						},
-						"2": {
-							"name": "meta.block.odin"
-						},
-						"3": {
-							"name": "meta.block.odin"
-						}
-					},
-					"match": "\\b(struct|enum|union|bit_field)\\b(?:(\\{)(\\}))?"
-				},
-				{
-					"name": "storage.type.odin",
-					"match": "\\b(proc|type)\\b"
-				},
-				{
-					"name": "meta.brackets.odin",
-					"captures": {
-						"1": {
-							"name": "punctuation.definition.brackets.begin.odin"
-						},
-						"2": {
-							"name": "constant.numeric.odin"
-						},
-						"3": {
-							"name": "punctuation.definition.brackets.end.odin"
-						}
-					},
-					"match": "(\\[)(\\d*)(\\])(?=[[:alpha:]_])"
-				},
-				{
-					"name": "storage.type.odin",
-					"match": "\\$\\s*({{identifier}})"
-				},
-				{
-					"include": "#basic-types"
-				}
-			]
-		},
-		"basic-types": {
-			"patterns": [
-				{
-					"name": "storage.type.odin",
-					"match": "\\b((i8|i16|i32|i64|int)|(u8|u16|u32|u64|uint|uintptr))\\b"
-				},
-				{
-					"name": "storage.type.odin",
-					"match": "\\b((f16|f32|f64)|(complex32|complex64|complex128))\\b"
-				},
-				{
-					"name": "storage.type.odin",
-					"match": "\\b(bool|b8|b16|b32|b64)\\b"
-				},
-				{
-					"name": "storage.type.odin",
-					"match": "\\b(string|rune|rawptr|any)\\b"
-				},
-				{
-					"name": "storage.type.odin",
-					"match": "\\b(byte|cstring)\\b"
-				}
-			]
-		},
-		"strings": {
-			"patterns": [
-				{
-					"name": "string.quoted.double.odin",
-					"begin": "\"",
-					"end": "\"",
-					"patterns": [
-						{
-							"include": "#string-escaped-char"
-						}
-					]
-				},
-				{
-					"name": "string.quoted.double.odin",
-					"begin": "`",
-					"end": "`"
-				},
-				{
-					"name": "string.quoted.single.odin",
-					"begin": "'",
-					"end": "'",
-					"patterns": [
-						{
-							"include": "#string-escaped-char"
-						}
-					]
-				}
-			],
-			"repository": {
-				"string-escaped-char": {
-					"patterns": [
-						{
-							"name": "constant.character.escape.odin",
-							"match": "\\\\(\\\\|[abfnrutv''\"]|x\\h{2}|u\\h{4}|U\\h{8}|[0-7]{3})"
-						},
-						{
-							"name": "invalid.illegal.unknown-escape.odin",
-							"match": "\\\\."
-						}
-					]
-				}
-			}
-		}
-	},
-	"scopeName": "source.odin"
+    Written by Tetralux@github.
+    Created December 2018.
+*/
+
+package base64;
+
+using import "core:fmt";
+
+BASE64_DIGITS := [64]byte{'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V',
+                  'W','X','Y','Z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r',
+                  's','t','u','v','w','x','y','z','0','1','2','3','4','5','6','7','8','9','+','/'};
+
+// TODO: Use mem.equal when available.
+equal :: proc(a, b: []byte) -> bool {
+    if len(a) != len(b) do return false;
+    if &a[0] == &b[0] do return true;
+    for i in 0..len(a)-1 {
+        if a[i] != b[i] do return false;
+    }
+    return true;
+}
+
+is_valid_digit :: proc(auto_cast ch: rune) -> bool {
+    if ch >= 'a' && ch <= 'z' do return true;
+    if ch >= 'A' && ch <= 'Z' do return true;
+    if ch >= '0' && ch <= '9' do return true;
+    if ch == '=' || ch == '+' || ch == '/' do return true;
+    return false;
+}
+
+/*
+    Encodes bytes into a string of Base64-encoded text.
+    Allocates if dst is nil.
+*/
+encode :: proc(auto_cast data: []byte, dst: []byte = nil) -> string #no_bounds_check {
+    dst := dst;
+    if dst == nil do dst = make([]byte, max(4, len(data)*3/4));
+
+    n := 0;
+    cs: [4]byte;
+    // Every three bytes corresponds to four ASCII Base64 letters.
+    for i := 0; i < len(data); i+=3 {
+        remaining := len(data)-i;
+        
+        cs[0] = BASE64_DIGITS[ (data[i] & 0xFC) >> 2 ];
+        switch {
+          case remaining >= 3:
+            cs[1] = BASE64_DIGITS[ ((data[i]   & 0x03) << 4) | ((data[i+1] & 0xF0) >> 4) ];
+            cs[2] = BASE64_DIGITS[ ((data[i+1] & 0x0F) << 2) | ((data[i+2] & 0xC0) >> 6) ];
+            cs[3] = BASE64_DIGITS[  (data[i+2] & 0x3F) ];
+          case remaining >= 2:
+            cs[1] = BASE64_DIGITS[ ((data[i]   & 0x03) << 4) | ((data[i+1] & 0xF0) >> 4) ];
+            cs[2] = BASE64_DIGITS[ ((data[i+1] & 0x0F) << 2) ];
+            cs[3] = '=';
+          case remaining == 1:
+            cs[1] = BASE64_DIGITS[ ((data[i] & 0x03) << 4) ];
+            cs[2] = '=';
+            cs[3] = '=';
+        }
+
+        // @Speed: Maybe use utf8.encode instead?
+        n += len(bprintf(dst[n:], "%r%r%r%r", cs[0],
+                                              cs[1],
+                                              cs[2],
+                                              cs[3]));
+        assert(n >= 4);
+    }
+
+    return cast(string) dst[:n];
+}
+
+/*
+    Decodes a base64 string into bytes.
+    Returns (bytes, -1) on success.
+    Allocates if dst is nil.
+*/
+decode :: proc(auto_cast input: string, dst: []byte = nil, validate := true) -> (bytes: []byte, bad_data_index: int) #require_results #no_bounds_check {
+    if input == "" do return nil, -1;
+    dst := dst;
+    count_expected := max(4, len(input)/4*3);
+    if dst == nil do dst = make([]byte, count_expected);
+    assert(len(dst) >= count_expected, "not enough space in the buffer");
+    dst = dst[:count_expected];
+
+    // @Note: The number of '=' at the end of the input
+    // is the number of bytes to trim off the end of the decoded data.
+    to_trim := 0;
+    for i := len(input)-1; i >= 0 && input[i] == '='; i -= 1 {
+        to_trim += 1;
+    }
+
+    // digit_to_index: map[byte]byte;
+    find_digit_index :: inline proc(digit: byte/*, digit_map: ^map[byte]byte*/) -> (index: byte, ok: bool) #no_bounds_check {
+        if digit == '=' do return 0, true;
+        // if i, ok := digit_map[digit]; ok do return i, true;
+
+        // @Speed: Scan for the correct byte. This could more than likely be done faster.
+        for e, i in BASE64_DIGITS {
+            if e == digit {
+                // printf("e:%v, i:%v\n", e, i);
+                assert(i <= 255);
+                // digit_map[digit] = byte(i);
+                return cast(byte)i, true;
+            }
+        }
+        return 0, false;
+    }
+
+    // Every four ASCII letters corresponds to 3 bytes.
+
+    byte_idx := 0;
+    for base64_idx := 0; base64_idx < len(input); base64_idx+=4 {
+        if validate {
+            if !is_valid_digit(input[base64_idx+0]) do return nil, base64_idx+0;
+            if !is_valid_digit(input[base64_idx+1]) do return nil, base64_idx+1;
+            if !is_valid_digit(input[base64_idx+2]) do return nil, base64_idx+2;
+            if !is_valid_digit(input[base64_idx+3]) do return nil, base64_idx+3;
+        }
+
+        ok: bool;
+        d1, d2, d3, d4: byte;
+        if d1, ok = find_digit_index(input[base64_idx]/*, &digit_to_index*/);   !ok do return nil, base64_idx+0;
+        if d2, ok = find_digit_index(input[base64_idx+1]/*, &digit_to_index*/); !ok do return nil, base64_idx+1;
+        if d3, ok = find_digit_index(input[base64_idx+2]/*, &digit_to_index*/); !ok do return nil, base64_idx+2;
+        if d4, ok = find_digit_index(input[base64_idx+3]/*, &digit_to_index*/); !ok do return nil, base64_idx+3;
+
+        dst[byte_idx+0] = (d1 << 2) | (d2 >> 4);
+        dst[byte_idx+1] = (d2 << 4) | (d3 >> 2);
+        dst[byte_idx+2] = (d3 << 6) | (d4);
+
+        byte_idx += 3; // @Note: Not to be confused with base64_idx...
+    }
+
+    // @Note: Trim off trailing zeros.
+    return dst[:count_expected-to_trim], -1;
+}
+
+// @CompilerBug: Produces no error when these are used, but no executable is generated.
+// tobase64 :: base64_encode;
+// unbase64 :: base64_decode;
+
+// @Test
+
+import "core:mem";
+import "core:time";
+import "core:hash";
+main :: proc() {
+    DATA_SIZE :: 50000;
+    data := make([]byte, DATA_SIZE);
+    ebuf := make([]byte, DATA_SIZE*2);
+    dbuf := make([]byte, DATA_SIZE*2);
+
+    encode_sum := 0;
+    decode_sum := 0;
+    passes := 0;
+
+    random: [1]byte = {0xff};
+
+    #no_bounds_check for i := 4; i < len(data); i += 1 {
+        passes += 1;
+        random[0] = byte(hash.crc32(random[:]));
+        data[i] = random[0];
+        s := data[:i];
+        // fmt.printf("encoding '%v'  ", string(s));
+
+        start := time.now();
+        t := encode(s[:], ebuf[:]);
+        time_to_encode := time.diff(start, time.now());
+        encode_sum += int(time_to_encode);
+        
+        // check for erroroneous leading/trailing whitespace
+        assert(t[0] != 0);
+        assert(t[len(t)-1] != 0);
+        // fmt.printf("to '%v'\n", t);
+        
+        start = time.now();
+        u, bi := decode(t, dbuf[:]);
+        if u == nil do panicf("decoding failed with %v input chars\n", len(s));
+        time_to_decode := time.diff(start, time.now());
+        decode_sum += int(time_to_decode);
+
+        // fmt.printf("'%v', %v\n\n", u, e);
+        assertf(equal(u, s), "'%v' => '%v' => '%v'", len(string(u)), string(t), len(string(s)));
+
+        // fmt.printf("n=%v: e=%v d=%v\n", len(s), time_to_encode, time_to_decode);
+    }
+
+    avg_enc_ms := f64(time.duration_nanoseconds(time.Duration(encode_sum))) / f64(passes) / 1000000;
+    avg_dec_ms := f64(time.duration_nanoseconds(time.Duration(decode_sum))) / f64(passes) / 1000000;
+    println("timings:");
+    printf("average encoding time %v ms\n", avg_enc_ms);
+    printf("average decoding time %v ms\n", avg_dec_ms);
+}
+
+
+constant_time_equal :: proc "contextless" (a, b: []byte) -> bool {
+    if len(a) != len(b) do return false;
+    x: uint = 0;
+    for i in 0..len(a)-1 {
+        x |= uint(a[i]) ~ uint(b[i]);
+    }
+    return x == 0;
 }
